@@ -1,0 +1,166 @@
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Добро пожаловать</title>
+    <style>
+      .mail-wrapper {
+        overflow: hidden;
+        width: 100%;
+        max-width: 768px;
+        margin: 0 auto;
+        border-radius: 8px;
+        background-color: #fff;
+        font-family: Arial, sans-serif;
+        color: #333;
+        box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+      }
+
+      .mail-header {
+        padding: 14px;
+        background-color: #1b2f52;
+      }
+
+      .mail-header-title {
+        font-size: 20px;
+        line-height: 18px;
+        color: white;
+        margin: 0;
+      }
+
+      .mail-logo {
+        width: 60px;
+      }
+
+      .img-wrapper {
+        width: 60px;
+      }
+
+      .mail-content {
+        padding: 24px;
+      }
+
+      .mail-title {
+        font-size: 20px;
+        line-height: 18px;
+        color: #1b2f52;
+        margin-top: 0;
+      }
+
+      .mail-text {
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      .mail-text span {
+        font-weight: 700;
+      }
+
+      .mail-info-box {
+        padding: 10px;
+        margin: 24px 0;
+        background-color: #f7f9fc;
+        border-left: 6px solid #1b2f52;
+      }
+
+      .mail-footer {
+        font-size: 16px;
+        color: #888;
+        margin-top: 32px;
+      }
+
+      .block-text {
+        font-size: 16px;
+        text-align: justify;
+      }
+
+      .block-text span {
+        font-weight: 700;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .link {
+        font-weight: 700;
+        color: #f76435;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="mail-wrapper">
+      <div class="mail-header">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td class="img-wrapper">
+              <img
+                src="https://res.cloudinary.com/djqpiccvn/image/upload/v1746843599/rotazap/Logo_k84iyl.png"
+                alt="Rotazap Logo"
+                class="mail-logo"
+                width="60"
+              />
+            </td>
+            <td style="padding-left: 10px;">
+              <h1 class="mail-header-title">
+                Интернет-магазин<br />
+                автомобильных запчастей
+              </h1>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="mail-content">
+
+        <h2 class="mail-title">Добро пожаловать, {{username}}!</h2>
+        <p class="mail-text">
+          Благодарим за регистрацию в интернет-магазине
+          <span>rotazap</span>.</p>
+
+        <div class="mail-info-box">
+          <p><strong>Email:</strong> {{email}}</p>
+          <p><strong>Имя пользователя:</strong> {{username}}</p>
+        </div>
+
+        <p class="block-text">
+          <span>Ваш аккаунт находится на стадии активации.</span>
+          После завершения процесса активации Вы сможете полноценно пользоваться
+          возможностями нашего интернет-магазина. Мы сотрудничаем исключительно
+          с клиентами, заключившими договор.
+          <br />
+          Ознакомиться с условиями Вы можете
+          <a
+            href="https://rotazap.ru/info/wholesale"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link"
+          >здесь</a>
+          (необходимо войти в аккаунт, на страницу ожидания).
+          <br />
+          Активация аккаунта будет завершена после выполнения всех условий,
+          указанных в договоре.
+          <br />
+          <br />
+          Дополнительную информацию вы можете получить у нашего менеджера:
+          <br />
+          <a href="tel:+79163934369" class="link">
+            +7 (916) 393-43-69
+          </a>
+          /
+          <a href="mailto:info@rotazap.ru" class="link">
+            info@rotazap.ru
+          </a>.
+        </p>
+
+        <p class="mail-footer">
+          С уважением,
+          <br />
+          Команда
+          <a href="https://rotazap.ru" class="link">rotazap.ru</a>
+        </p>
+      </div>
+    </div>
+  </body>
+
+</html>

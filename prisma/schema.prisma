@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int                 @id @default(autoincrement())
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  email               String              @unique
+  username            String              @unique
+  password            String
+  fullName            String
+  phoneNumber         String              @default("")
+  address             String
+  legalForm           String
+  activity            String
+  organizationName    String
+  priceListId         Int                 @default(1)
+  role                String              @default("pending")
+  avatarPath          String              @default("/upload/default-avatar.png") @map("avatar_path")
+  refreshToken        String?
+  baskets             Basket[]            @relation("UserBasket")
+  orders              Orders[]            @relation("UserOrders")
+  passwordResetTokens PasswordResetToken?
+
+  @@map("users")
+}
+
+model Basket {
+  userId       Int
+  skuId        Int
+  supplierId   Int
+  qty          Int
+  price        Float
+  descr        String?
+  hash         String
+  basePrice    Float?
+  deliveryDays Int?
+  sku          Sku       @relation("SkuBasket", fields: [skuId], references: [id], onDelete: Cascade)
+  supplier     Suppliers @relation("SupplierBasket", fields: [supplierId], references: [id], onDelete: Cascade)
+  user         User      @relation("UserBasket", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, skuId, supplierId, hash])
+  @@map("basket")
+}
+
+model Orders {
+  id         Int          @id @default(autoincrement())
+  userId     Int
+  createdAt  DateTime     @default(now())
+  isReceived Boolean      @default(false)
+  orderLines OrderLines[] @relation("Order_OrderLines")
+  user       User         @relation("UserOrders", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("orders")
+}
+
+model OfferPrice {
+  priceListId Int
+  supplierId  Int
+  skuId       Int
+  price       Float
+  priceList   PriceLists @relation(fields: [priceListId], references: [id], onDelete: Cascade)
+  sku         Sku        @relation(fields: [skuId], references: [id], onDelete: Cascade)
+  supplier    Suppliers  @relation("SupplierOfferPrice", fields: [supplierId], references: [id], onDelete: Cascade)
+
+  @@id([priceListId, supplierId, skuId])
+  @@map("offer_price")
+}
+
+model OrderLinesStatus {
+  id            Int         @id @default(autoincrement())
+  orderLineId   Int
+  orderStatusId Int
+  qty           Int
+  createdAt     DateTime    @default(now())
+  orderLine     OrderLines  @relation(fields: [orderLineId], references: [id], onDelete: Cascade)
+  orderStatus   OrderStatus @relation(fields: [orderStatusId], references: [id], onDelete: Cascade)
+
+  @@map("order_lines_status")
+}
+
+model OrderLines {
+  id              Int                @id @default(autoincrement())
+  orderId         Int
+  skuId           Int
+  supplierId      Int
+  qty             Int
+  price           Float
+  descr           String?
+  basePrice       Float?
+  deliveryDays    Int?
+  order           Orders             @relation("Order_OrderLines", fields: [orderId], references: [id], onDelete: Cascade)
+  sku             Sku                @relation(fields: [skuId], references: [id], onDelete: Cascade)
+  supplier        Suppliers          @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  orderLineStatus OrderLinesStatus[]
+
+  @@map("order_lines")
+}
+
+model OrderStatus {
+  id              Int                @id @default(autoincrement())
+  name            String             @unique
+  orderLineStatus OrderLinesStatus[]
+
+  @@map("order_status")
+}
+
+model PriceLists {
+  id          Int          @id
+  name        String       @unique
+  offerPrices OfferPrice[]
+
+  @@map("price_list")
+}
+
+model SkuNames {
+  id    Int    @id
+  skuId Int
+  name  String
+  sku   Sku    @relation(fields: [skuId], references: [id], onDelete: Cascade)
+
+  @@map("sku_names")
+}
+
+model Sku {
+  id              Int               @id
+  brandId         Int
+  article         String
+  baskets         Basket[]          @relation("SkuBasket")
+  offerPrices     OfferPrice[]
+  orderLines      OrderLines[]
+  brand           Brands            @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  skuNames        SkuNames[]
+  suppliersOffers SuppliersOffers[]
+
+  @@map("sku")
+}
+
+model SuppliersOffers {
+  supplierId Int
+  skuId      Int
+  basePrice  Float
+  qty        Int
+  sku        Sku       @relation(fields: [skuId], references: [id], onDelete: Cascade)
+  supplier   Suppliers @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+
+  @@id([supplierId, skuId, basePrice])
+  @@map("suppliers_offers")
+}
+
+model Suppliers {
+  id              Int               @id
+  stock           Boolean
+  deliveryDays    Int               @default(0)
+  baskets         Basket[]          @relation("SupplierBasket")
+  offerPrices     OfferPrice[]      @relation("SupplierOfferPrice")
+  orderLines      OrderLines[]
+  suppliersOffers SuppliersOffers[]
+
+  @@map("suppliers")
+}
+
+model Brands {
+  id   Int    @id
+  name String @unique
+  skus Sku[]
+
+  @@map("brands")
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_token")
+}

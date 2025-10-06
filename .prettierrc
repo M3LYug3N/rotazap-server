@@ -1,0 +1,18 @@
+{
+  "endOfLine": "auto",
+  "trailingComma": "all",
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^@/modules/(.*)$",
+    "^@/config/(.*)$",
+    "^@/guards/(.*)$",
+    "^@/strategy/(.*)$",
+    "^@/common/(.*)$",
+    "^../(.*)$",
+    "^./(.*)$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderParserPlugins": ["typescript", "decorators-legacy"],
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+}
