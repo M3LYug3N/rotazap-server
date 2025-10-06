@@ -1,4 +1,13 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2019",
+    "outDir": "./dist",
+    "sourceMap": false,
+    "declaration": false,
+    "verbatimModuleSyntax": false
+  },
+  "exclude": ["node_modules", "test", "**/*.spec.ts"]
 }
