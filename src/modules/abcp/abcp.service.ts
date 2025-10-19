@@ -205,7 +205,10 @@ export class AbcpService {
     // 1) Берём только цены из нужного прайс-листа
     const [offerPrices, suppliersOffers] = await Promise.all([
       this.prisma.offerPrice.findMany({
-        where: { skuId: { in: skuIds }, priceListId },
+        where: {
+          skuId: { in: skuIds },
+          priceListId,
+        },
         select: { skuId: true, supplierId: true, price: true },
       }),
       this.prisma.suppliersOffers.findMany({
@@ -221,11 +224,11 @@ export class AbcpService {
     ]);
 
     // Для быстрого доступа делаем индекс цен по (skuId, supplierId)
-    const priceKey = (skuId: number, supplierId: number) =>
-      `${skuId}:${supplierId}`;
+    const priceKey = (skuId: number, supplierId: number, priceListId: number) =>
+      `${skuId}:${supplierId}:${priceListId}`;
     const priceMap = new Map<string, number>();
     for (const p of offerPrices) {
-      priceMap.set(priceKey(p.skuId, p.supplierId), p.price);
+      priceMap.set(priceKey(p.skuId, p.supplierId, priceListId), p.price);
     }
 
     return skuRecords.map((sku): LocalOfferGroup => {
@@ -238,7 +241,7 @@ export class AbcpService {
         if (s.qty <= 0) continue;
 
         // цена из offer_price ТОЛЬКО для текущего прайс-листа
-        const price = priceMap.get(priceKey(sku.id, s.supplierId));
+        const price = priceMap.get(priceKey(sku.id, s.supplierId, priceListId));
         if (price == null) continue; // нет записи в offer_price — оффер скрываем
 
         const deliveryDays = s.supplier?.deliveryDays ?? 0;
@@ -246,8 +249,8 @@ export class AbcpService {
         const hash = generateBasketHash(
           sku.id,
           s.supplierId,
-          s.basePrice, // basePrice просто прокидываем в hash/БД
-          price, // пользовательская цена из offer_price
+          s.basePrice,
+          price,
           s.qty,
           deliveryDays,
         );
