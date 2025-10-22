@@ -224,3 +224,4 @@ ALTER TABLE "suppliers_offers" ADD CONSTRAINT "suppliers_offers_supplierId_fkey"
 
 -- AddForeignKey
 ALTER TABLE "password_reset_token" ADD CONSTRAINT "password_reset_token_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+

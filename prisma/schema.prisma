@@ -147,8 +147,10 @@ model SuppliersOffers {
   skuId      Int
   basePrice  Float
   qty        Int
-  sku        Sku       @relation(fields: [skuId], references: [id], onDelete: Cascade)
-  supplier   Suppliers @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  mpq        Int   @default(1)
+
+  sku      Sku       @relation(fields: [skuId], references: [id], onDelete: Cascade)
+  supplier Suppliers @relation(fields: [supplierId], references: [id], onDelete: Cascade)
 
   @@id([supplierId, skuId, basePrice])
   @@map("suppliers_offers")
