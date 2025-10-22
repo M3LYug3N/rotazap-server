@@ -25,6 +25,7 @@ export interface LocalOffer {
   price: number;
   basePrice: number;
   qty: number;
+  mpq: number; // кратность
   hash: string;
   deliveryDays: number;
 }

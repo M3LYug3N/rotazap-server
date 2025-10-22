@@ -218,6 +218,7 @@ export class AbcpService {
           supplierId: true,
           basePrice: true,
           qty: true,
+          mpq: true,
           supplier: { select: { deliveryDays: true } },
         },
       }),
@@ -261,6 +262,7 @@ export class AbcpService {
           basePrice: s.basePrice,
           price,
           qty: s.qty,
+          mpq: s.mpq,
           hash,
           deliveryDays,
         });
